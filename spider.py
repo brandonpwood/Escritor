@@ -6,8 +6,6 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 
-token = "EAAGjLzQuFNcBANGc4ZBAeT3aY0j8hyfXi072fn9RoZBddQempQZA8NZAcRZAn81hNFskbb67jTk6ZBLmJbSbTYTS82VhmQswYe7NGN2UvobznWi96f3BQPqp4FPVhYtzCzKLDLEBFKD1uDqrli6GHbYUz8DehzQiii2DWTjrFlZBAZDZD"
-team334 = "116920961670659"
 
 
 class spider(object):
@@ -208,13 +206,3 @@ class spider(object):
         print('----------------------------------------------------------------')
         print('Edge lists')
         print(self.edges)
-
-
-
-# s = spider(token, '2.7')
-
-# s.scrape2(team334, 9, save = True)
-# s.make_network(draw = True, save = True)
-
-# s.read(node_file = 'nodes.csv', edge_file = 'edges.csv')
-# s.make_network(draw = True)
