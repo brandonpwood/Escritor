@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 
 
-class spider(object):
+class escritor(object):
     def __init__(self, token, version):
         self.token = token
         self.version = version
