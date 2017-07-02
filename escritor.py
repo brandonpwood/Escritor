@@ -6,8 +6,6 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 
-
-
 class escritor(object):
     def __init__(self, token, version):
         self.token = token
@@ -121,6 +119,7 @@ class escritor(object):
     def extract2(self, node):
         neighbors = self.graph.get_connections(node, connection_name = 'likes')
         return [x['id'] for x in neighbors['data']]
+
     def scrape2(self, start_node, steps, **kwargs):
         ids = self.extract2(start_node)
         stepped = 0
@@ -193,15 +192,19 @@ class escritor(object):
 
                 # Draw, color differently based on degree.
                 else:
-                    pos = nx.spring_layout(G, k = .15, iterations = 20)
-                    degrees = list(G.out_degree(G.nodes()).values())
+                    label = G.out_degree(G.nodes()).values()
+                    degrees = list(label)
+                    labels = dict(zip(G.nodes(), label))
+
+                    # for label, node in zip(labels, G.nodes()):
+                    #     labels[node] = label
 
                     nx.draw(G, pos,
-                        node_size = 10,
+                        node_size = 20,
                         width = .1,
                         node_color = degrees,
                         cmap = plt.get_cmap('coolwarm'))
-
+                    nx.draw_networkx_labels(G, pos, labels, font_size = 4)
                 # Save if requested.
                 if 'save' in kwargs:
                     if kwargs['save']:
