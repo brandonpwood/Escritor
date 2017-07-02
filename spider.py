@@ -117,6 +117,7 @@ class spider(object):
         if 'save' in kwargs:
             if kwargs['save']:
                 self.save()
+
     def extract2(self, node):
         neighbors = self.graph.get_connections(node, connection_name = 'likes')
         return [x['id'] for x in neighbors['data']]
@@ -135,6 +136,18 @@ class spider(object):
                 if node not in ids:
                     ids.append(node)
             stepped += 1
+        # Save data if requested.
+        if 'save' in kwargs:
+            if kwargs['save']:
+                self.save()
+
+    def chunk(self, l, n):
+        '''Chunk a list l into parts of size n'''
+        chunks = []
+        for i in range(0, len(l), n):
+            chunks.append(l[i:i+n])
+        return chunks
+
     def make_network(self, **kwargs):
         '''Generates network from data'''
 
@@ -156,25 +169,31 @@ class spider(object):
         # Draw, if specified.
         if 'draw' in kwargs:
             if kwargs['draw']:
-                pos = nx.spring_layout(G, k = .25, iterations = 10)
+                # large graph settings
+                plt.figure(num=None, figsize = (10, 10), dpi=1200)
+                pos = nx.spring_layout(G, k = .15, iterations = 5, scale = 5)
 
                 # Draw with large bubbles and the names of pages
-                if 'names' in kwargs:
+                if 'name' in kwargs:
                     if kwargs['name']:
-                        # Scrape names.
-                        labels = {}
-                        # for iden in self.nodes:
-                        #     name  = self.graph.get_object(iden, )
-                        #     G[iden]['name'] = name
-                        #     labels[iden] = name
+                        # Scrape names, maximum of 50 ids per request.
+                        reqs = self.chunk(G.nodes(), 50)
+                        names = []
+                        for x in reqs:
+                            names.append(self.graph.get_objects(x))
 
+                        # Fetch names
+                        new_names = {}
+                        for req in names:
+                            for node in req:
+                                new_names[node] = req[node]['name']
                         # Drawing.
-                        pos = nx.spring_layout(G, k = .5, iterations = 10)
-                        nx.draw(G, pos, node_size = 100, width = .1)
+                        nx.draw(G,pos, node_size = 10, width = .1, node_color = 'blue', edge_color = 'green')
+                        nx.draw_networkx_labels(G, pos, new_names, font_size = .5)
 
                 # Draw, color differently based on degree.
                 else:
-                    pos = nx.spring_layout(G, k = .15, iterations = 10)
+                    pos = nx.spring_layout(G, k = .15, iterations = 20)
                     degrees = list(G.out_degree(G.nodes()).values())
 
                     nx.draw(G, pos,
@@ -186,10 +205,15 @@ class spider(object):
                 # Save if requested.
                 if 'save' in kwargs:
                     if kwargs['save']:
-                        plt.savefig('graph' + str(time.time()) + '.png', dpi=1000)
+                        plt.savefig('graph' + str(time.time()) + '.png', dpi=1200, bbox_inches=None, pad_inches=0.1)
 
-                self.G = G
-                plt.show()
+                check = True
+                if 'quiet' in kwargs:
+                    if kwargs['quiet']:
+                        check = False
+                if check:
+                    self.G = G
+                    plt.show()
 
     def oust(self, **kwargs):
         '''Prints current data'''
