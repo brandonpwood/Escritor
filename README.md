@@ -11,14 +11,5 @@ It can also save images as png files and will graph the connections with the pag
 the degree of each node (with a normalized color map based on the degree).
 
 # Example graphs
-## Scraped 200 pages
-![](graph200.png)
-![](graph200name.png)
-
-## Scraped 50 pages
-![](graph50.png)
-![](graph50name.png)
-
-## Scraped 25 pages
-![](graph25.png)
-![](graph25name.png)
+## Scraped 200, 50, and 25 pages
+![](/examples/examples.gif)
