@@ -1,5 +1,5 @@
 # Overeview
-A simple python package for graphing connections between facebook pages.
+A simple python tool for graphing connections between facebook pages.
 The Graphs are directed and edges represent likes between pages.
 # Use
 Use requires you create a facebook app and retrieve a token for the graph API, which can be done here:
